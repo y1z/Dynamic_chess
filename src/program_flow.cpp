@@ -1,4 +1,5 @@
 #include "program_flow.hpp"
+#include "drawing.hpp"
 
 #include "../raylib/src/raylib.h"
 
@@ -54,17 +55,8 @@ int run() {
     {
         // TODO: Draw TITLE screen here!
       DrawRectangle(0, 0, g_screenWidth, g_screenHeight, CLITERAL(Color){255, 255, 255, 255 });
-      const Rectangle starting_point = board_cell;
-      DrawRectangleRec(board_cell, DARKGRAY);
 
-      for (int i = 0; i < (g_screenWidth / g_cell_width); ++i) {
-
-        board_cell.x += board_cell.width * 2;
-        DrawRectangleRec(board_cell, DARKGRAY);
-
-      }
-
-      board_cell = starting_point;
+      draw_board_row(g_cell_width * 2, 8, board_cell);
 
       DrawText("TITLE SCREEN", 20, 20, 40, DARKGREEN);
       DrawText("PRESS ENTER or TAP to JUMP to GAMEPLAY SCREEN", 120, 220, 20, DARKGREEN);
