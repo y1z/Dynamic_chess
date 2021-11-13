@@ -3,10 +3,12 @@
 
 #include "../raylib/src/raylib.h"
 
-//------------------------------------------------------------------------------------------
-// Types and Structures Definition
-//------------------------------------------------------------------------------------------
-typedef enum GameScreen { LOGO = 0, TITLE, GAMEPLAY, ENDING } GameScreen;
+enum class GameState
+{
+  INIT,
+  GAME,
+  END
+};
 
 constexpr const int g_screenWidth = 1280;
 constexpr const int g_screenHeight = 720;
@@ -21,7 +23,7 @@ int run() {
   //--------------------------------------------------------------------------------------
   InitWindow(g_screenWidth, g_screenHeight, "raylib [core] example - basic screen manager");
 
-  GameScreen currentScreen = static_cast<GameScreen>(TITLE);
+  GameState current_state = static_cast<GameState>(GameState::INIT);
 
   Rectangle board_cell = { 0 };
   board_cell.width = static_cast<float>(g_cell_width);
@@ -43,41 +45,14 @@ int run() {
 
     ClearBackground(RAYWHITE);
 
-    switch (currentScreen) {
-    case LOGO:
+    switch (current_state) {
+    case GameState::INIT:
     {
-        // TODO: Draw LOGO screen here!
-      DrawText("LOGO SCREEN", 20, 20, 40, LIGHTGRAY);
-      DrawText("WAIT for 2 SECONDS...", 290, 220, 20, GRAY);
+      //DrawRectangle(0, 0, g_screenWidth, g_screenHeight, CLITERAL(Color){255, 255, 255, 255 });
 
-    } break;
-    case TITLE:
-    {
-        // TODO: Draw TITLE screen here!
-      DrawRectangle(0, 0, g_screenWidth, g_screenHeight, CLITERAL(Color){255, 255, 255, 255 });
+      draw_chess_board(g_screenWidth, g_screenHeight, board_cell);
 
-      draw_board_row(g_cell_width * 2, 8, board_cell,DARKBROWN);
-
-      DrawText("TITLE SCREEN", 20, 20, 40, DARKGREEN);
-      DrawText("PRESS ENTER or TAP to JUMP to GAMEPLAY SCREEN", 120, 220, 20, DARKGREEN);
-
-    } break;
-    case GAMEPLAY:
-    {
-        // TODO: Draw GAMEPLAY screen here!
-      DrawRectangle(0, 0, g_screenWidth, g_screenHeight, PURPLE);
-      DrawText("GAMEPLAY SCREEN", 20, 20, 40, GOLD);
-      DrawText("PRESS ENTER or TAP to JUMP to ENDING SCREEN", 130, 220, 20, GOLD);
-
-    } break;
-    case ENDING:
-    {
-        // TODO: Draw ENDING screen here!
-      DrawRectangle(0, 0, g_screenWidth, g_screenHeight, BLUE);
-      DrawText("ENDING SCREEN", 20, 20, 40, VIOLET);
-      DrawText("PRESS ENTER or TAP to RETURN to TITLE SCREEN", 120, 220, 20, VIOLET);
-
-    } break;
+    }
     default: break;
     }
 
