@@ -56,7 +56,7 @@ int run() {
         // TODO: Draw TITLE screen here!
       DrawRectangle(0, 0, g_screenWidth, g_screenHeight, CLITERAL(Color){255, 255, 255, 255 });
 
-      draw_board_row(g_cell_width * 2, 8, board_cell);
+      draw_board_row(g_cell_width * 2, 8, board_cell,DARKBROWN);
 
       DrawText("TITLE SCREEN", 20, 20, 40, DARKGREEN);
       DrawText("PRESS ENTER or TAP to JUMP to GAMEPLAY SCREEN", 120, 220, 20, DARKGREEN);

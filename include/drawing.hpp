@@ -12,6 +12,9 @@ namespace dc {
 * @param[in] how_many_cells_to_draw The amount of cells to draw one after another
 
 */
-void draw_board_row(const int cell_width_distance, const unsigned int how_many_cells_to_draw, Rectangle starting_cell);
+void draw_board_row(const int cell_width_distance,
+                    const unsigned int how_many_cells_to_draw,
+                    const Rectangle starting_cell,
+                    const Color cell_color = DARKGRAY);
 
 }
