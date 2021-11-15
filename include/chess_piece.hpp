@@ -11,12 +11,14 @@ namespace dc
 class chessPiece
 {
 public:
-  chessPiece(pieceData piece_data,const point32 position);
+  chessPiece(pieceData piece_data,const point32 position,const bool _is_white);
 
 private:
   pieceData m_how_piece_works;
 public:
   point32 m_position;
+  /// @brief no the actual color of the piece if it's on the side with the first turn
+  bool m_is_white_side;
 };
 
 
