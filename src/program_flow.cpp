@@ -1,5 +1,6 @@
 #include "program_flow.hpp"
 #include "drawing.hpp"
+#include "chess_board.hpp"
 
 #include "../raylib/src/raylib.h"
 
@@ -15,7 +16,8 @@ constexpr const int g_screenHeight = 720;
 constexpr const int g_cell_width = g_screenWidth / 8;
 constexpr const int g_cell_height = g_screenHeight / 8;
 
-namespace dc {
+namespace dc
+{
 
 int run() {
 
@@ -28,6 +30,8 @@ int run() {
   Rectangle board_cell = { 0 };
   board_cell.width = static_cast<float>(g_cell_width);
   board_cell.height = static_cast<float>(g_cell_height);
+
+  chessBoard board = chessBoard::default_chess_board();
 
   // TODO: Initialize all required variables and load all required data here!
 
@@ -50,7 +54,10 @@ int run() {
     {
       //DrawRectangle(0, 0, g_screenWidth, g_screenHeight, CLITERAL(Color){255, 255, 255, 255 });
 
-      draw_chess_board(g_screenWidth, g_screenHeight, board_cell);
+      //draw_chess_board(g_screenWidth, g_screenHeight, board_cell);
+
+      //DrawText("K", 100, 100, 24 * 4, DARKPURPLE);
+      board.draw();
 
     }
     default: break;

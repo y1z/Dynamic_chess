@@ -14,6 +14,11 @@ public:
   chessBoard(std::vector<chessPiece> _pieces,
              usize32 _board_size);
 
+
+  /// @brief Draws the board and the piece on it
+  void
+  draw()const;
+
   /// @return A chess board with the default configuration (aka how chess is normally played )
   static chessBoard default_chess_board();
 
