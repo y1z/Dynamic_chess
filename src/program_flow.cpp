@@ -23,7 +23,7 @@ int run() {
 
   // Initialization
   //--------------------------------------------------------------------------------------
-  InitWindow(g_screenWidth, g_screenHeight, "raylib [core] example - basic screen manager");
+  InitWindow(g_screenWidth, g_screenHeight, "dynamic chess");
 
   GameState current_state = static_cast<GameState>(GameState::INIT);
 
@@ -34,8 +34,6 @@ int run() {
   chessBoard board = chessBoard::default_chess_board();
 
   // TODO: Initialize all required variables and load all required data here!
-
-  int framesCounter = 0;          // Useful to count frames
 
   ::SetTargetFPS(60);               // Set desired framerate (frames-per-second)
   //--------------------------------------------------------------------------------------
@@ -56,8 +54,8 @@ int run() {
 
       //draw_chess_board(g_screenWidth, g_screenHeight, board_cell);
 
-      //DrawText("K", 100, 100, 24 * 4, DARKPURPLE);
       board.draw();
+      DrawText("K", 100, 100, 24 * 4, DARKPURPLE);
 
     }
     default: break;

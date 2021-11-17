@@ -13,8 +13,9 @@ namespace dc
 class chessPiece
 {
 public:
-  chessPiece(pieceData piece_data,
-             const point32 position,
+  chessPiece(pieceData _piece_data,
+             const point32 _position,
+             const usize32 _piece_size,
              const bool _is_white,
              std::string_view _text_form = "?");
 
@@ -22,6 +23,43 @@ public:
   /// @return The text representation of a piece
   std::string_view
   get_text_form()const;
+
+
+  /// @param position Where the piece will be in the board
+  /// @param piece_size How big is the chess piece
+  /// @return A pawn for a chess game
+  static chessPiece
+  pawn(const point32 position, const usize32 piece_size, const bool is_white_piece);
+
+  /// @param position Where the piece will be in the board
+  /// @param piece_size How big is the chess piece
+  /// @return A knight for a chess game
+  static chessPiece
+  knight(const point32 position, const usize32 piece_size, const bool is_white_piece);
+
+  /// @param position Where the piece will be in the board
+  /// @param piece_size How big is the chess piece
+  /// @return A tower for a chess game
+  static chessPiece
+  tower(const point32 position, const usize32 piece_size, const bool is_white_piece);
+
+  /// @param position Where the piece will be in the board
+  /// @param piece_size How big is the chess piece
+  /// @return A bishop for a chess game
+  static chessPiece
+  bishop(const point32 position, const usize32 piece_size, const bool is_white_piece);
+
+  /// @param position Where the piece will be in the board
+  /// @param piece_size How big is the chess piece
+  /// @return A queen for a chess game
+  static chessPiece
+  queen(const point32 position, const usize32 piece_size, const bool is_white_piece);
+
+  /// @param position Where the piece will be in the board
+  /// @param piece_size How big is the chess piece
+  /// @return A king for a chess game
+  static chessPiece
+  king(const point32 position, const usize32 piece_size, const bool is_white_piece);
 
 private:
   /// @brief Determines how the piece works
@@ -35,6 +73,10 @@ private:
 public:
   /// @brief Where the piece is located.
   point32 m_position;
+
+  /// @brief How big the piece is
+  usize32 m_piece_size;
+
   /// @brief No the actual color of the piece if it's on the side with the first turn
   bool m_is_white_side;
 };

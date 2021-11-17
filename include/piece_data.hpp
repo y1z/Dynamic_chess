@@ -40,7 +40,8 @@ struct pieceData
     how_piece_moves(_how_piece_moves),
     move_type(_move_type),
     move_attri( _move_attri),
-    how_piece_attacks(_how_piece_attacks)
+    how_piece_attacks(_how_piece_attacks),
+    can_be_checked(_can_be_checked)
   {}
 
   /// @return The data necessary for a pawn
