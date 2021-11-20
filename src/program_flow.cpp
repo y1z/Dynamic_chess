@@ -3,6 +3,7 @@
 #include "chess_board.hpp"
 
 #include "../raylib/src/raylib.h"
+#include <iostream>
 
 enum class GameState
 {
@@ -18,11 +19,21 @@ constexpr const int g_cell_height = g_screenHeight / 8;
 
 namespace dc
 {
+using std::cout;
 
-int run() {
+void print_rec(const Rectangle& rec)
+{
+  cout << "x = " << rec.x <<
+    "\ny = " << rec.y <<
+    "\nwidth = " << rec.width <<
+    "\nheight = " << rec.height << '\n';
+}
 
-  // Initialization
-  //--------------------------------------------------------------------------------------
+int run()
+{
+
+// Initialization
+//--------------------------------------------------------------------------------------
   InitWindow(g_screenWidth, g_screenHeight, "dynamic chess");
 
   GameState current_state = static_cast<GameState>(GameState::INIT);
@@ -39,27 +50,45 @@ int run() {
   //--------------------------------------------------------------------------------------
 
   // Main game loop
+
+  bool is_default_color = true;
   while (!WindowShouldClose())    // Detect window close button or ESC key
   {
     // Draw
     //----------------------------------------------------------------------------------
     BeginDrawing();
-
-    ClearBackground(RAYWHITE);
-
-    switch (current_state) {
+    const auto mouse_pos = GetMousePosition();
+    switch (current_state)
+    {
     case GameState::INIT:
     {
+
+      Rectangle test_rect = { 0.0f,0.0f,400.0f,400.0f };
       //DrawRectangle(0, 0, g_screenWidth, g_screenHeight, CLITERAL(Color){255, 255, 255, 255 });
-
       //draw_chess_board(g_screenWidth, g_screenHeight, board_cell);
+      if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && CheckCollisionPointRec(mouse_pos, test_rect))
+      {
 
-      board.draw();
-      DrawText("K", 100, 100, 24 * 4, DARKPURPLE);
+        if (is_default_color)
+        {
+          board.m_opposite_side_color = BLUE;
+        }
+        else
+        {
+          board.m_opposite_side_color = BLACK;
+        }
+        is_default_color = !is_default_color;
+
+      }
 
     }
     default: break;
     }
+
+    ClearBackground(DARKBROWN);
+
+    board.draw();
+
 
     EndDrawing();
     //----------------------------------------------------------------------------------

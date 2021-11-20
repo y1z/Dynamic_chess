@@ -12,11 +12,11 @@ class chessBoard
 {
 public:
   chessBoard(std::vector<chessPiece> _pieces,
-             usize32 _board_size);
+             usize32 _column_and_row_count,
+             usize32 _cell_size,
+             const Color _starting_side_color = WHITE,
+             const Color _opposite_side_color = BLACK);
 
-  chessBoard(std::vector<chessPiece>&& _pieces,
-             usize32 _board_size,
-             usize32 _cell_size);
 
 
   /// @brief Draws the board and the piece on it
@@ -29,9 +29,21 @@ public:
   /// @brief All the pieces in the chess board
   std::vector<chessPiece> m_pieces;
 
-  /// @brief The size of the board
-  usize32 m_board_size;
-  usize32 m_cell_board_size;
+  /// @brief How big is the board
+  Rectangle m_area;
+
+
+  /// @brief Counts the columns and rows
+  usize32 m_column_and_row_count;
+
+  /// @brief The size of every cell
+  usize32 m_cell_size;
+
+  /// @brief The first color
+  Color m_starting_side_color;
+
+  /// @brief The second color
+  Color m_opposite_side_color;
 };
 
 }

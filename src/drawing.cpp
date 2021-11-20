@@ -19,29 +19,27 @@ draw_board_row(const int32 distance_between_cells,
 }
 
 void
-draw_chess_board(const uint32 board_width,
-                 const uint32 board_height,
+draw_chess_board(const uint32 column_total,
+                 const uint32 row_total,
                  Rectangle starting_cell,
-                 const Color first_color,
-                 const Color second_color) {
-  assert(board_height > 0 || "minimum value for height is 1");
-  assert(board_width > 0 || "minimum value for width is 1");
+                 const Color starting_side_color,
+                 const Color opposite_side_color) {
+  assert(row_total > 0 || "minimum value for height is 1");
+  assert(column_total > 0 || "minimum value for width is 1");
   assert(starting_cell.width > 0.0f || "cannot have negative width cells");
   assert(starting_cell.height > 0.0f || "cannot have negative height cells");
 
-  const uint32 total_rows = board_width / starting_cell.width;
-  const uint32 total_colums = board_height / starting_cell.height;
   const float starting_x_position = starting_cell.x;
-  for (uint32 i = 0; i < total_colums; ++i) {
+  for (uint32 i = 0; i < column_total; ++i) {
     if (i % 2 == 0) {
-      draw_board_row(starting_cell.width * 2, total_rows / 2, starting_cell, first_color);
+      draw_board_row(starting_cell.width * 2, row_total / 2, starting_cell, starting_side_color);
       starting_cell.x += starting_cell.width;
-      draw_board_row(starting_cell.width * 2, total_rows / 2, starting_cell, second_color);
+      draw_board_row(starting_cell.width * 2, row_total / 2, starting_cell, opposite_side_color);
     }
     else {
-      draw_board_row(starting_cell.width * 2, total_rows / 2, starting_cell, second_color);
+      draw_board_row(starting_cell.width * 2, row_total / 2, starting_cell, opposite_side_color);
       starting_cell.x += starting_cell.width;
-      draw_board_row(starting_cell.width * 2, total_rows / 2, starting_cell, first_color);
+      draw_board_row(starting_cell.width * 2, row_total / 2, starting_cell, starting_side_color);
     }
 
     starting_cell.x = starting_x_position;

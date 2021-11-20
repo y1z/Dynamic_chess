@@ -7,18 +7,17 @@ using uint32 = uint32_t;
 
 
 
-struct point32
+template<class T>
+struct point
 {
-  int32 x;
-  int32 y;
+  T x;
+  T y;
 };
 
-
-struct upoint32
-{
-  uint32 x;
-  uint32 y;
-};
+using point32 = point<int32>;
+using upoint32 = point<uint32>;
+using fpoint32 = point<float>;
 
 using size32 = point32;
 using usize32 = upoint32;
+using fsize32 = fpoint32;

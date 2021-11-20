@@ -28,7 +28,7 @@ void draw_board_row(const int32 distance_between_cells,
 void draw_chess_board(const uint32 board_width,
                       const uint32 board_height,
                       Rectangle starting_cell,
-                      const Color first_color = RAYWHITE,
-                      const Color second_color = DARKBLUE);
+                      const Color starting_side_color = RAYWHITE,
+                      const Color opposite_side_color = DARKBLUE);
 
 }
