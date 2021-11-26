@@ -1,6 +1,7 @@
 #pragma once
 #include "util_type.hpp"
 #include "chess_piece.hpp"
+#include <optional>
 
 namespace dc
 {
@@ -18,13 +19,25 @@ public:
              const Color _opposite_side_color = BLACK);
 
 
-
   /// @brief Draws the board and the piece on it
   void
   draw()const;
 
+  /// @param[in] index Which piece are you going to generate the `Rectangle` for
+  /// @returns A `Rectangle` that defines the area the piece occupies on the board
+  Rectangle
+  gen_rectangle_for_piece(size_t index)const;
+
+
+  /// @param position Where you check to see if there is a chess piece there.
+  /// @returns chessPiece if a piece is at the position you specified.
+  std::optional<chessPiece>
+  get_piece_ref_at(const Vector2 position);
+
   /// @return A chess board with the default configuration (aka how chess is normally played )
-  static chessBoard default_chess_board(const std::optional<usize32> size_of_pieces = std::nullopt);
+  static chessBoard
+  default_chess_board(const std::optional<usize32> size_of_pieces = std::nullopt);
+
 
   /// @brief All the pieces in the chess board
   std::vector<chessPiece> m_pieces;

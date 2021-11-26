@@ -12,10 +12,10 @@ enum class GameState
   END
 };
 
-constexpr const int g_screenWidth = 1280;
-constexpr const int g_screenHeight = 720;
-constexpr const int g_cell_width = g_screenWidth / 8;
-constexpr const int g_cell_height = g_screenHeight / 8;
+constexpr const int g_starting_screen_width = 1920;
+constexpr const int g_starting_screen_height = 1080;
+constexpr const int g_cell_width = g_starting_screen_width / 8;
+constexpr const int g_cell_height = g_starting_screen_height / 8;
 
 namespace dc
 {
@@ -31,13 +31,13 @@ void print_rec(const Rectangle& rec)
 
 int run()
 {
+  SetWindowState(FLAG_MSAA_4X_HINT);
+  InitWindow(g_starting_screen_width, g_starting_screen_height, "dynamic chess");
+  SetWindowState(FLAG_WINDOW_RESIZABLE);
 
-// Initialization
-//--------------------------------------------------------------------------------------
-  InitWindow(g_screenWidth, g_screenHeight, "dynamic chess");
+//  SetWindowSize();
 
-  GameState current_state = static_cast<GameState>(GameState::INIT);
-
+  GameState current_state = GameState::GAME;
   Rectangle board_cell = { 0 };
   board_cell.width = static_cast<float>(g_cell_width);
   board_cell.height = static_cast<float>(g_cell_height);
@@ -52,23 +52,27 @@ int run()
   // Main game loop
 
   bool is_default_color = true;
+  size32 current_size_of_screen{ g_starting_screen_width, g_starting_screen_height };
   while (!WindowShouldClose())    // Detect window close button or ESC key
   {
     // Draw
     //----------------------------------------------------------------------------------
     BeginDrawing();
+
+
+    ClearBackground(CLITERAL(Color) {230,230,230,255});
+    size32 size_of_screen{ 0 };
+    size_of_screen.x = GetScreenWidth();
+    size_of_screen.y = GetScreenHeight();
     const auto mouse_pos = GetMousePosition();
     switch (current_state)
     {
-    case GameState::INIT:
+    case GameState::GAME:
     {
-
-      Rectangle test_rect = { 0.0f,0.0f,400.0f,400.0f };
-      //DrawRectangle(0, 0, g_screenWidth, g_screenHeight, CLITERAL(Color){255, 255, 255, 255 });
-      //draw_chess_board(g_screenWidth, g_screenHeight, board_cell);
-      if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && CheckCollisionPointRec(mouse_pos, test_rect))
+      const auto piece_ref = board.get_piece_ref_at(mouse_pos);
+      if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && piece_ref.has_value())
       {
-
+        const auto& piece = piece_ref.value();
         if (is_default_color)
         {
           board.m_opposite_side_color = BLUE;
@@ -81,11 +85,16 @@ int run()
 
       }
 
+      if (size_of_screen.x != current_size_of_screen.x && size_of_screen.y != current_size_of_screen.x)
+      {
+        current_size_of_screen = size_of_screen;
+      }
+
     }
+    break;
     default: break;
     }
 
-    ClearBackground(DARKBROWN);
 
     board.draw();
 
