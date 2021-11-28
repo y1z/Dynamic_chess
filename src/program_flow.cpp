@@ -44,14 +44,10 @@ int run()
 
   chessBoard board = chessBoard::default_chess_board();
 
-  // TODO: Initialize all required variables and load all required data here!
 
   ::SetTargetFPS(60);               // Set desired framerate (frames-per-second)
   //--------------------------------------------------------------------------------------
-
   // Main game loop
-
-  bool is_default_color = true;
   size32 current_size_of_screen{ g_starting_screen_width, g_starting_screen_height };
   while (!WindowShouldClose())    // Detect window close button or ESC key
   {
@@ -65,26 +61,13 @@ int run()
     size_of_screen.x = GetScreenWidth();
     size_of_screen.y = GetScreenHeight();
     const auto mouse_pos = GetMousePosition();
+
+    std::optional<Rectangle> mouse_cursor_rect = std::nullopt;
     switch (current_state)
     {
     case GameState::GAME:
     {
-      const auto piece_ref = board.get_piece_ref_at(mouse_pos);
-      if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && piece_ref.has_value())
-      {
-        const auto& piece = piece_ref.value();
-        if (is_default_color)
-        {
-          board.m_opposite_side_color = BLUE;
-        }
-        else
-        {
-          board.m_opposite_side_color = BLACK;
-        }
-        is_default_color = !is_default_color;
-
-      }
-
+      mouse_cursor_rect = board.get_piece_rect_at(mouse_pos);
       if (size_of_screen.x != current_size_of_screen.x && size_of_screen.y != current_size_of_screen.x)
       {
         current_size_of_screen = size_of_screen;
@@ -97,6 +80,20 @@ int run()
 
 
     board.draw();
+    if (mouse_cursor_rect.has_value() && IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+    {
+      const auto mouse_rect = mouse_cursor_rect.value();
+      if (auto* ptr = board.get_piece_ptr_at(mouse_pos))
+      {
+        auto piece_data = ptr->get_piece_data();
+        for (const auto& elem : piece_data.how_piece_moves)
+        {
+          std::cout << "\nx = " << elem.x << "\ny = " << elem.y << '\n';
+        }
+        std::cout << "\ndone\n\n";
+      }
+      DrawRectangleRec(mouse_rect, CLITERAL(Color){ 253, 249, 0, 255 / 2 });
+    }
 
 
     EndDrawing();

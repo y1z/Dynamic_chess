@@ -4,7 +4,8 @@
 #include "../raylib/src/raylib.h"
 
 
-namespace dc {
+namespace dc
+{
 
 /**
 * @param[in] distance_between_cells the distance between cells

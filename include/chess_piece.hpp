@@ -29,6 +29,10 @@ public:
   void
   draw_text()const;
 
+  /// @return A reference to the data of the piece.
+  const pieceData&
+  get_piece_data()const;
+
 
   /// @param position Where the piece will be in the board
   /// @param piece_size How big is the chess piece

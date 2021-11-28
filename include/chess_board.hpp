@@ -1,6 +1,7 @@
 #pragma once
 #include "util_type.hpp"
 #include "chess_piece.hpp"
+#include <deque>
 #include <optional>
 
 namespace dc
@@ -30,21 +31,34 @@ public:
 
 
   /// @param position Where you check to see if there is a chess piece there.
-  /// @returns chessPiece if a piece is at the position you specified.
-  std::optional<chessPiece>
-  get_piece_ref_at(const Vector2 position);
+  /// @returns A pointer to the given piece
+  const chessPiece *
+  get_piece_ptr_at(const Vector2 position);
+
+  /// @param position Where you check to see if there is a chess piece there.
+  /// @return A `Rectangle` that represent the area the piece occupies.
+  std::optional<Rectangle>
+  get_piece_rect_at(const Vector2 position);
+
 
   /// @return A chess board with the default configuration (aka how chess is normally played )
   static chessBoard
   default_chess_board(const std::optional<usize32> size_of_pieces = std::nullopt);
 
+private:
 
+
+  /// @param position Where you check to see if there is a chess piece there.
+  /// @return true if the piece is at that position
+  bool
+  is_piece_at(const Vector2 position, const size_t index);
+
+public:
   /// @brief All the pieces in the chess board
-  std::vector<chessPiece> m_pieces;
+  std::deque<chessPiece> m_pieces;
 
   /// @brief How big is the board
   Rectangle m_area;
-
 
   /// @brief Counts the columns and rows
   usize32 m_column_and_row_count;

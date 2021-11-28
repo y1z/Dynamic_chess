@@ -2,8 +2,6 @@
 #include "drawing.hpp"
 #include "util_funcs.hpp"
 #include "../raylib/src/raymath.h"
-#include <optional>
-#include <algorithm> // numeric_limits
 
 namespace dc
 {
@@ -19,7 +17,7 @@ chessBoard::chessBoard(vector<chessPiece> _pieces,
                        const Color _starting_side_color,
                        const Color _opposite_side_color)
   :
-  m_pieces(std::move(_pieces)),
+  m_pieces(_pieces.begin(), _pieces.end()),
   m_column_and_row_count(_column_and_row_count),
   m_cell_size(_cell_size),
   m_starting_side_color(_starting_side_color),
@@ -74,20 +72,37 @@ chessBoard::gen_rectangle_for_piece(size_t index) const
 
 }
 
-std::optional<chessPiece>
-chessBoard::get_piece_ref_at(const Vector2 position)
+const chessPiece *
+chessBoard::get_piece_ptr_at(const Vector2 position)
 {
-  for (size_t i = 0; i < m_pieces.size() - 1; ++i)
+
+  for (size_t i = 0; i < m_pieces.size(); ++i)
   {
-    const auto piece_rec = gen_rectangle_for_piece(i);
-    if (CheckCollisionPointRec(position, piece_rec))
+
+    if (is_piece_at(position, i))
     {
-      return m_pieces[i];
+      return &m_pieces[i];
+    }
+  }
+
+  return nullptr;
+}
+
+std::optional<Rectangle>
+chessBoard::get_piece_rect_at(const Vector2 position)
+{
+  for (size_t i = 0; i < m_pieces.size(); ++i)
+  {
+
+    if (is_piece_at(position, i))
+    {
+      return gen_rectangle_for_piece(i);
     }
   }
 
   return std::nullopt;
 }
+
 
 chessBoard
 chessBoard::default_chess_board(const std::optional<usize32> size_of_pieces)
@@ -151,6 +166,17 @@ chessBoard::default_chess_board(const std::optional<usize32> size_of_pieces)
   const usize32 column_and_rows{ 8,8 };
 
   return chessBoard(pieces, column_and_rows, final_size_of_pieces);
+}
+
+bool
+chessBoard::is_piece_at(const Vector2 position, const size_t index)
+{
+  const auto piece_rec = gen_rectangle_for_piece(index);
+  if (CheckCollisionPointRec(position, piece_rec))
+  {
+    return true;
+  }
+  return false;
 }
 
 

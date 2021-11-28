@@ -36,6 +36,12 @@ chessPiece::draw_text() const
 
 }
 
+const pieceData&
+chessPiece::get_piece_data() const
+{
+  return m_how_piece_works;
+}
+
 chessPiece
 chessPiece::pawn(const point32 position,
                  const usize32 piece_size,
