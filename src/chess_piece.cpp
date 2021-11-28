@@ -29,8 +29,8 @@ void
 chessPiece::draw_text() const
 {
   DrawText(m_text_form.c_str(),
-           m_position.x * m_piece_size.x,
-           m_position.y * m_piece_size.y,
+          (m_position.x * m_piece_size.x) + m_piece_size.x / 2,
+          (m_position.y * m_piece_size.y),
            m_piece_size.x / 2,
            m_text_color);
 
