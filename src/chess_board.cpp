@@ -2,6 +2,7 @@
 #include "drawing.hpp"
 #include "util_funcs.hpp"
 #include "../raylib/src/raymath.h"
+#include <iostream>
 
 namespace dc
 {
@@ -27,6 +28,22 @@ chessBoard::chessBoard(vector<chessPiece> _pieces,
   m_area.y = 0.0f;
   m_area.width = static_cast<float>(m_cell_size.x * m_column_and_row_count.x);
   m_area.height = static_cast<float>(m_cell_size.y * m_column_and_row_count.y);
+  const uint32 total_cells = m_column_and_row_count.x * m_column_and_row_count.y;
+  m_board_cells.reserve(total_cells);
+
+  for (uint32 i = 0; i < m_column_and_row_count.y; ++i)
+  {
+    for (uint32 j = 0; j < m_column_and_row_count.x; ++j)
+    {
+      const point32 current_point = { j,i };
+      boardCell cell = { current_point, false };
+      if (is_piece_at_cell_position(current_point))
+      {
+        cell.is_occupied_by_piece = true;
+      }
+      m_board_cells.emplace_back(cell);
+    }
+  }
 }
 
 void
@@ -98,6 +115,35 @@ chessBoard::get_piece_rect_at(const Vector2 position)
   return std::nullopt;
 }
 
+void
+chessBoard::print_board_cells()
+{
+  const int32 total_columns = m_column_and_row_count.x;
+  const int32 total_rows = m_column_and_row_count.y;
+  for (int32 i = 0; i < total_rows; ++i)
+  {
+    std::cout << '|';
+    for (int32 j = 0; j < total_columns - 1; ++j)
+    {
+
+      if (m_board_cells[(i * total_columns) + j].is_occupied_by_piece)
+      {
+        const point32 cell_position = { j,i };
+        const auto text = get_text_for_piece_at(cell_position);
+        std::cout << text ;
+      }
+      else
+      {
+        std::cout << " ";
+      }
+      std::cout << "|";
+    }
+
+      std::cout << "\n";
+  }
+  std::cout << "\n\n";
+}
+
 
 chessBoard
 chessBoard::default_chess_board(const std::optional<usize32> size_of_pieces)
@@ -164,7 +210,7 @@ chessBoard::default_chess_board(const std::optional<usize32> size_of_pieces)
 }
 
 bool
-chessBoard::is_piece_at(const Vector2 position, const size_t index)
+chessBoard::is_piece_at(const Vector2 position, const size_t index) const
 {
   const auto piece_rec = gen_rectangle_for_piece(index);
   if (CheckCollisionPointRec(position, piece_rec))
@@ -172,6 +218,51 @@ chessBoard::is_piece_at(const Vector2 position, const size_t index)
     return true;
   }
   return false;
+}
+
+bool
+chessBoard::is_piece_at_cell_position(const point32 cell_position) const
+{
+  for (const auto& elem : m_pieces)
+  {
+    if (cell_position == elem.m_position)
+    {
+      return true;
+    }
+  }
+  return false;
+}
+
+
+std::string_view
+chessBoard::get_text_for_piece_at(const point32 cell_position) const
+{
+  const auto index = get_chess_piece_index_at_cell(cell_position);
+  if (index.has_value())
+  {
+    return m_pieces[index.value()].get_text_form();
+  }
+
+  return std::string_view("?");
+}
+
+
+std::optional<size_t>
+chessBoard::get_chess_piece_index_at_cell(const point32 cell_position) const
+{
+  size_t current_index = 0;
+  for (const auto& piece : m_pieces)
+  {
+    if (cell_position == piece.m_position)
+    {
+      return current_index;
+    }
+
+    ++current_index;
+  }
+
+
+  return std::nullopt;
 }
 
 

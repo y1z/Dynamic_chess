@@ -75,6 +75,10 @@ int run()
     // Draw
     //----------------------------------------------------------------------------------
 
+    if (IsKeyPressed(KEY_P))
+    {
+      board.print_board_cells();
+    }
     BeginDrawing();
 
 

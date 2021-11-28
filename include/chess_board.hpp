@@ -13,6 +13,12 @@ namespace dc
 class chessBoard
 {
 public:
+
+  struct boardCell
+  {
+    point32 cell_position;
+    bool is_occupied_by_piece;
+  };
   chessBoard(std::vector<chessPiece> _pieces,
              usize32 _column_and_row_count,
              usize32 _cell_size,
@@ -40,6 +46,8 @@ public:
   std::optional<Rectangle>
   get_piece_rect_at(const Vector2 position);
 
+  void
+  print_board_cells();
 
   /// @return A chess board with the default configuration (aka how chess is normally played )
   static chessBoard
@@ -51,8 +59,23 @@ private:
   /// @param position Where you check to see if there is a chess piece there.
   /// @return true if the piece is at that position
   bool
-  is_piece_at(const Vector2 position, const size_t index);
+  is_piece_at(const Vector2 position, const size_t index)const;
 
+  /// @param cell_position Which of the cell to check
+  /// @returns true if there is a cell at the cell_position
+  bool
+  is_piece_at_cell_position(const point32 cell_position)const;
+
+  /// @param cell_position Which of the cell to check
+  /// @return The text used to represent the piece
+  std::string_view
+  get_text_for_piece_at(const point32 cell_position)const;
+
+
+  std::optional<size_t>
+  get_chess_piece_index_at_cell(const point32 cell_position)const;
+
+  std::vector<boardCell> m_board_cells;
 public:
   /// @brief All the pieces in the chess board
   std::deque<chessPiece> m_pieces;

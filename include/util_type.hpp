@@ -12,6 +12,17 @@ struct point
 {
   T x;
   T y;
+
+
+  bool operator!=(const point& other)const
+  {
+    return !(this->operator==(other));
+  }
+
+  bool operator==(const point& other)const
+  {
+    return this->x == other.x && this->y == other.y;
+  }
 };
 
 using point32 = point<int32>;
