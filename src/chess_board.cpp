@@ -46,12 +46,7 @@ chessBoard::draw() const
   for (const auto& ele : m_pieces)
   {
     const auto str_view = ele.get_text_form();
-    DrawText(str_view.data(),
-             ele.m_position.x * m_cell_size.x,
-             ele.m_position.y * m_cell_size.y,
-             m_cell_size.x,
-             ele.m_text_color);
-
+    ele.draw_text();
   }
 
 }

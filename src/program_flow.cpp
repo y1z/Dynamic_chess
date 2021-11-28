@@ -14,8 +14,8 @@ enum class GameState
 
 constexpr const int g_starting_screen_width = 1920;
 constexpr const int g_starting_screen_height = 1080;
-constexpr const int g_cell_width = g_starting_screen_width / 8;
-constexpr const int g_cell_height = g_starting_screen_height / 8;
+constexpr const int g_cell_width = g_starting_screen_width / (8 * 3);
+constexpr const int g_cell_height = g_starting_screen_height / (8 * 3);
 
 namespace dc
 {
@@ -42,7 +42,7 @@ int run()
   board_cell.width = static_cast<float>(g_cell_width);
   board_cell.height = static_cast<float>(g_cell_height);
 
-  chessBoard board = chessBoard::default_chess_board();
+  chessBoard board = chessBoard::default_chess_board(usize32{ g_cell_width, g_cell_height});
 
 
   ::SetTargetFPS(60);               // Set desired framerate (frames-per-second)
@@ -51,12 +51,7 @@ int run()
   size32 current_size_of_screen{ g_starting_screen_width, g_starting_screen_height };
   while (!WindowShouldClose())    // Detect window close button or ESC key
   {
-    // Draw
-    //----------------------------------------------------------------------------------
-    BeginDrawing();
 
-
-    ClearBackground(CLITERAL(Color) {230,230,230,255});
     size32 size_of_screen{ 0 };
     size_of_screen.x = GetScreenWidth();
     size_of_screen.y = GetScreenHeight();
@@ -77,12 +72,17 @@ int run()
     break;
     default: break;
     }
+    // Draw
+    //----------------------------------------------------------------------------------
 
+    BeginDrawing();
+
+
+    ClearBackground(CLITERAL(Color) {230,230,230,255});
 
     board.draw();
     if (mouse_cursor_rect.has_value() && IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
     {
-      const auto mouse_rect = mouse_cursor_rect.value();
       if (auto* ptr = board.get_piece_ptr_at(mouse_pos))
       {
         auto piece_data = ptr->get_piece_data();
@@ -92,6 +92,7 @@ int run()
         }
         std::cout << "\ndone\n\n";
       }
+      const auto mouse_rect = mouse_cursor_rect.value();
       DrawRectangleRec(mouse_rect, CLITERAL(Color){ 253, 249, 0, 255 / 2 });
     }
 
