@@ -92,13 +92,22 @@ int run()
     {
 
       active_piece_id = board.get_piece_id_at(mouse_pos);
-      if (active_piece_id.has_value())
-      {
-        std::cout << "piece id = " << active_piece_id.value() << '\n';
-      }
+      //if (active_piece_id.has_value())
+      //{
+      //  std::cout << "piece id = " << active_piece_id.value() << '\n';
+      //}
 
       const auto mouse_rect = mouse_cursor_rect.value();
-      DrawRectangleRec(mouse_rect, CLITERAL(Color){ 253, 249, 0, 255 / 2 });
+      //DrawRectangleRec(mouse_rect, CLITERAL(Color){ 253, 249, 0, 255 / 2 });
+    }
+
+    if (active_piece_id.has_value())
+    {
+      if (auto ptr = board.get_piece_by_id(active_piece_id.value()))
+      {
+        board.draw_highlight_rectangle_at(ptr->m_position);
+      }
+
     }
 
 

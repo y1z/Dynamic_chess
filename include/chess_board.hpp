@@ -53,6 +53,9 @@ public:
   void
   print_board_cells();
 
+  void
+  draw_highlight_rectangle_at(const point32 cell_position)const;
+
   /// @return A chess board with the default configuration (aka how chess is normally played )
   static chessBoard
   default_chess_board(const std::optional<usize32> size_of_pieces = std::nullopt);
@@ -61,6 +64,10 @@ public:
   /// @returns A pointer to the chess piece if the piece is in the given cell_position
   const chessPiece*
   get_piece_ptr_at_cell_position(const point32 cell_position)const;
+
+  /// @returns A pointer to the piece with the same id
+  const chessPiece*
+  get_piece_by_id(size_t id)const;
 
   bool
   is_piece_at_cell_position_alive(const point32 cell_position)const;
@@ -88,6 +95,10 @@ private:
   /// @returns An std::nullopt if a piece is not at the cell_position, otherwise returns an index
   std::optional<size_t>
   get_chess_piece_index_at_cell(const point32 cell_position)const;
+
+  /// @returns a rectangle that represents the cell position
+  Rectangle
+  gen_rectangle_for_cell_position(const point32 cell_position, usize32 rectangle_size)const;
 
 
 

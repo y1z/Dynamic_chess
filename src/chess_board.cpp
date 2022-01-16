@@ -72,16 +72,7 @@ Rectangle
 chessBoard::gen_rectangle_for_piece(size_t index) const
 {
   const auto piece = m_pieces.at(index);
-  const auto x_offset = piece.m_position.x * piece.m_piece_size.x;
-  const auto y_offset =  piece.m_position.y * piece.m_piece_size.y;
-
-  Rectangle result;
-  result.x = static_cast<float>(x_offset);
-  result.y = static_cast<float>(y_offset);
-  result.width = static_cast<float>(piece.m_piece_size.x);
-  result.height = static_cast<float>(piece.m_piece_size.y);
-  return  result;
-
+  return gen_rectangle_for_cell_position(piece.m_position, piece.m_piece_size);
 }
 
 const chessPiece *
@@ -109,7 +100,7 @@ chessBoard::get_piece_rect_at(const Vector2 position)
 
     if (is_piece_at(position, i))
     {
-      return gen_rectangle_for_piece(i);
+      return gen_rectangle_for_cell_position(m_pieces[i].m_position, m_pieces[i].m_piece_size);
     }
   }
 
@@ -155,6 +146,15 @@ chessBoard::print_board_cells()
       std::cout << "\n";
   }
   std::cout << "\n\n";
+}
+
+void
+chessBoard::draw_highlight_rectangle_at(const point32 cell_position) const
+{
+  const Rectangle rect = gen_rectangle_for_cell_position(cell_position, m_cell_size);
+
+  DrawRectangleRec(rect, CLITERAL(Color){ 253, 249, 0, 255 / 2 } );
+
 }
 
 
@@ -299,6 +299,36 @@ chessBoard::get_chess_piece_index_at_cell(const point32 cell_position) const
 
 
   return std::nullopt;
+}
+
+Rectangle
+chessBoard::gen_rectangle_for_cell_position(const point32 cell_position,
+                                            usize32 rectangle_size) const
+{
+  const auto x_offset =  cell_position.x * m_cell_size.x;
+  const auto y_offset = cell_position.y * m_cell_size.y;
+
+  Rectangle result;
+  result.x = static_cast<float>(x_offset);
+  result.y = static_cast<float>(y_offset);
+  result.width = static_cast<float>(rectangle_size.x);
+  result.height = static_cast<float>(rectangle_size.y);
+  return  result;
+}
+
+const chessPiece*
+chessBoard::get_piece_by_id(size_t id) const
+{
+
+  for (const auto& piece : m_pieces)
+  {
+    if (id == piece.get_id())
+    {
+      return &piece;
+    }
+  }
+
+  return nullptr;
 }
 
 
