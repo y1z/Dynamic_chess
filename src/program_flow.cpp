@@ -49,6 +49,7 @@ int run()
   //--------------------------------------------------------------------------------------
   // Main game loop
   size32 current_size_of_screen{ g_starting_screen_width, g_starting_screen_height };
+  std::optional<size_t> selected_piece_index = std::nullopt;
   while (!WindowShouldClose())    // Detect window close button or ESC key
   {
 
@@ -72,29 +73,27 @@ int run()
     break;
     default: break;
     }
-    // Draw
-    //----------------------------------------------------------------------------------
 
     if (IsKeyPressed(KEY_P))
     {
       board.print_board_cells();
     }
+    // Draw
+    //----------------------------------------------------------------------------------
+
     BeginDrawing();
 
 
     ClearBackground(CLITERAL(Color) {230,230,230,255});
 
     board.draw();
+
     if (mouse_cursor_rect.has_value() && IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
     {
       if (auto* ptr = board.get_piece_ptr_at(mouse_pos))
       {
-        auto piece_data = ptr->get_piece_data();
-        for (const auto& elem : piece_data.how_piece_moves)
-        {
-          std::cout << "\nx = " << elem.x << "\ny = " << elem.y << '\n';
-        }
-        std::cout << "\ndone\n\n";
+        //board.get_chess
+        std::cout << "position: x = " << ptr->m_position.x << " y = " << ptr->m_position.y << '\n';
       }
       const auto mouse_rect = mouse_cursor_rect.value();
       DrawRectangleRec(mouse_rect, CLITERAL(Color){ 253, 249, 0, 255 / 2 });
