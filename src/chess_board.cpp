@@ -85,7 +85,7 @@ chessBoard::gen_rectangle_for_piece(size_t index) const
 }
 
 const chessPiece *
-chessBoard::get_piece_ptr_at(const Vector2 position)
+chessBoard::get_piece_ptr_at(const Vector2 position)const
 {
 
   for (size_t i = 0; i < m_pieces.size(); ++i)
@@ -111,6 +111,17 @@ chessBoard::get_piece_rect_at(const Vector2 position)
     {
       return gen_rectangle_for_piece(i);
     }
+  }
+
+  return std::nullopt;
+}
+
+std::optional<size_t>
+chessBoard::get_piece_id_at(const Vector2 position) const
+{
+  if (const chessPiece* ptr = get_piece_ptr_at(position))
+  {
+    return ptr->get_id();
   }
 
   return std::nullopt;

@@ -42,14 +42,14 @@ int run()
   board_cell.width = static_cast<float>(g_cell_width);
   board_cell.height = static_cast<float>(g_cell_height);
 
-  chessBoard board = chessBoard::default_chess_board(usize32{ g_cell_width, g_cell_height});
+  chessBoard board = chessBoard::default_chess_board(usize32{ g_cell_width, g_cell_height });
 
 
   ::SetTargetFPS(60);               // Set desired framerate (frames-per-second)
   //--------------------------------------------------------------------------------------
   // Main game loop
   size32 current_size_of_screen{ g_starting_screen_width, g_starting_screen_height };
-  std::optional<size_t> selected_piece_index = std::nullopt;
+  std::optional<size_t> active_piece_id = std::nullopt;
   while (!WindowShouldClose())    // Detect window close button or ESC key
   {
 
@@ -84,17 +84,19 @@ int run()
     BeginDrawing();
 
 
-    ClearBackground(CLITERAL(Color) {230,230,230,255});
+    ClearBackground(CLITERAL(Color) { 230, 230, 230, 255 });
 
     board.draw();
 
     if (mouse_cursor_rect.has_value() && IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
     {
-      if (auto* ptr = board.get_piece_ptr_at(mouse_pos))
+
+      active_piece_id = board.get_piece_id_at(mouse_pos);
+      if (active_piece_id.has_value())
       {
-        //board.get_chess
-        std::cout << "position: x = " << ptr->m_position.x << " y = " << ptr->m_position.y << '\n';
+        std::cout << "piece id = " << active_piece_id.value() << '\n';
       }
+
       const auto mouse_rect = mouse_cursor_rect.value();
       DrawRectangleRec(mouse_rect, CLITERAL(Color){ 253, 249, 0, 255 / 2 });
     }

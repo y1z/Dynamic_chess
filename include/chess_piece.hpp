@@ -34,6 +34,10 @@ public:
   const pieceData&
   get_piece_data()const;
 
+  /// @returns The id of the piece.
+  size_t
+  get_id()const;
+
 
   /// @param position Where the piece will be in the board
   /// @param piece_size How big is the chess piece

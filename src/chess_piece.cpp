@@ -45,6 +45,12 @@ chessPiece::get_piece_data() const
   return m_how_piece_works;
 }
 
+size_t
+chessPiece::get_id() const
+{
+  return m_piece_id;
+}
+
 chessPiece
 chessPiece::pawn(const point32 position,
                  const usize32 piece_size,

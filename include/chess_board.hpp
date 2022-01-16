@@ -39,12 +39,16 @@ public:
   /// @returns A pointer to the given piece if the piece is not there
   /// it returns a null pointer
   const chessPiece *
-  get_piece_ptr_at(const Vector2 position);
+  get_piece_ptr_at(const Vector2 position)const;
 
   /// @param position Where you check to see if there is a chess piece there.
   /// @return A `Rectangle` that represent the area the piece occupies.
   std::optional<Rectangle>
   get_piece_rect_at(const Vector2 position);
+
+
+  std::optional<size_t>
+  get_piece_id_at(const Vector2 position)const;
 
   void
   print_board_cells();
