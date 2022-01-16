@@ -35,9 +35,9 @@ public:
   Rectangle
   gen_rectangle_for_piece(size_t index)const;
 
-
   /// @param position Where you check to see if there is a chess piece there.
-  /// @returns A pointer to the given piece
+  /// @returns A pointer to the given piece if the piece is not there
+  /// it returns a null pointer
   const chessPiece *
   get_piece_ptr_at(const Vector2 position);
 
@@ -52,6 +52,15 @@ public:
   /// @return A chess board with the default configuration (aka how chess is normally played )
   static chessBoard
   default_chess_board(const std::optional<usize32> size_of_pieces = std::nullopt);
+
+  /// @param cell_position which cell to look for a piece
+  /// @returns A pointer to the chess piece if the piece is in the given cell_position
+  const chessPiece*
+  get_piece_ptr_at_cell_position(const point32 cell_position)const;
+
+  bool
+  is_piece_at_cell_position_alive(const point32 cell_position)const;
+
 
 private:
 
@@ -71,9 +80,12 @@ private:
   std::string_view
   get_text_for_piece_at(const point32 cell_position)const;
 
-
+  /// @param cell_position Which of the cells you what to check on
+  /// @returns An std::nullopt if a piece is not at the cell_position, otherwise returns an index
   std::optional<size_t>
   get_chess_piece_index_at_cell(const point32 cell_position)const;
+
+
 
   std::vector<boardCell> m_board_cells;
 public:

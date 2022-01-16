@@ -31,9 +31,9 @@ chessBoard::chessBoard(vector<chessPiece> _pieces,
   const uint32 total_cells = m_column_and_row_count.x * m_column_and_row_count.y;
   m_board_cells.reserve(total_cells);
 
-  for (uint32 i = 0; i < m_column_and_row_count.y; ++i)
+  for (int32 i = 0; i < m_column_and_row_count.y; ++i)
   {
-    for (uint32 j = 0; j < m_column_and_row_count.x; ++j)
+    for (int32 j = 0; j < m_column_and_row_count.x; ++j)
     {
       const point32 current_point = { j,i };
       boardCell cell = { current_point, false };
@@ -51,8 +51,8 @@ chessBoard::draw() const
 {
 
   Rectangle rect = { 0 };
-  rect.width = m_cell_size.x;
-  rect.height = m_cell_size.y;
+  rect.width = static_cast<float>( m_cell_size.x);
+  rect.height = static_cast<float>(m_cell_size.y);
 
   dc::draw_chess_board(m_column_and_row_count.x,
                        m_column_and_row_count.y,
@@ -100,6 +100,7 @@ chessBoard::get_piece_ptr_at(const Vector2 position)
   return nullptr;
 }
 
+
 std::optional<Rectangle>
 chessBoard::get_piece_rect_at(const Vector2 position)
 {
@@ -118,15 +119,16 @@ chessBoard::get_piece_rect_at(const Vector2 position)
 void
 chessBoard::print_board_cells()
 {
-  const int32 total_columns = m_column_and_row_count.x;
-  const int32 total_rows = m_column_and_row_count.y;
-  for (int32 i = 0; i < total_rows; ++i)
+  const uint32 total_columns = m_column_and_row_count.x;
+  const uint32 total_rows = m_column_and_row_count.y;
+  for (uint32 i = 0; i < total_rows; ++i)
   {
     std::cout << '|';
-    for (int32 j = 0; j < total_columns - 1; ++j)
+    for (uint32 j = 0; j < total_columns; ++j)
     {
+      const size_t board_cell_index = (i * total_columns) + j;
 
-      if (m_board_cells[(i * total_columns) + j].is_occupied_by_piece)
+      if (m_board_cells[board_cell_index].is_occupied_by_piece)
       {
         const point32 cell_position = { j,i };
         const auto text = get_text_for_piece_at(cell_position);
@@ -153,11 +155,13 @@ chessBoard::default_chess_board(const std::optional<usize32> size_of_pieces)
 
   const auto final_size_of_pieces = size_of_pieces.value_or(usize32{ DEFAULT_CELL_WIDTH,DEFAULT_CELL_HEIGHT });
 
+  size_t id = 0;
   for (int32 i = 0; i < 8; ++i)
   {
     pieces.push_back(chessPiece::pawn(point32{ i,1 },
                      final_size_of_pieces,
                      false,
+                     id++,
                      MAROON));
   }
 
@@ -166,6 +170,7 @@ chessBoard::default_chess_board(const std::optional<usize32> size_of_pieces)
     pieces.push_back(chessPiece::pawn(point32{ i,6 },
                      final_size_of_pieces,
                      true,
+                     id++,
                      SKYBLUE));
   }
 
@@ -190,6 +195,7 @@ chessBoard::default_chess_board(const std::optional<usize32> size_of_pieces)
                      point32{ i,0 },
                      final_size_of_pieces,
                      false,
+                     id++,
                      back_row.at(i).second,
                      MAROON));
   }
@@ -200,6 +206,7 @@ chessBoard::default_chess_board(const std::optional<usize32> size_of_pieces)
                      point32{ i,7 },
                      final_size_of_pieces,
                      true,
+                     id++,
                      back_row.at(i).second,
                      SKYBLUE));
   }
@@ -208,6 +215,24 @@ chessBoard::default_chess_board(const std::optional<usize32> size_of_pieces)
 
   return chessBoard(pieces, column_and_rows, final_size_of_pieces);
 }
+
+const chessPiece*
+chessBoard::get_piece_ptr_at_cell_position(const point32 cell_position)const
+{
+  const std::optional<size_t>index = get_chess_piece_index_at_cell(cell_position);
+  if (index.has_value())
+  {
+    return &m_pieces[index.value()];
+  }
+  return nullptr;
+}
+
+bool
+chessBoard::is_piece_at_cell_position_alive(const point32 cell_position) const
+{
+  return get_piece_ptr_at_cell_position(cell_position)->m_is_alive;
+}
+
 
 bool
 chessBoard::is_piece_at(const Vector2 position, const size_t index) const
