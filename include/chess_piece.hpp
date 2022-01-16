@@ -17,6 +17,7 @@ public:
              const point32 _position,
              const usize32 _piece_size,
              const bool _is_white,
+             size_t piece_id,
              std::string_view _text_form = "?",
              const Color _text_color = GRAY);
 
@@ -41,6 +42,7 @@ public:
   pawn(const point32 position,
        const usize32 piece_size,
        const bool is_white_piece,
+       size_t piece_id,
        const Color piece_color = GRAY);
 
   /// @param position Where the piece will be in the board
@@ -50,6 +52,7 @@ public:
   knight(const point32 position,
          const usize32 piece_size,
          const bool is_white_piece,
+         size_t piece_id,
          const Color piece_color = GRAY);
 
   /// @param position Where the piece will be in the board
@@ -59,6 +62,7 @@ public:
   tower(const point32 position,
         const usize32 piece_size,
         const bool is_white_piece,
+        size_t piece_id,
         const Color piece_color = GRAY);
 
   /// @param position Where the piece will be in the board
@@ -68,6 +72,7 @@ public:
   bishop(const point32 position,
          const usize32 piece_size,
          const bool is_white_piece,
+         size_t piece_id,
          const Color piece_color = GRAY);
 
   /// @param position Where the piece will be in the board
@@ -77,6 +82,7 @@ public:
   queen(const point32 position,
         const usize32 piece_size,
         const bool is_white_piece,
+        size_t piece_id,
         const Color piece_color = GRAY);
 
   /// @param position Where the piece will be in the board
@@ -86,6 +92,7 @@ public:
   king(const point32 position,
        const usize32 piece_size,
        const bool is_white_piece,
+       size_t piece_id,
        const Color piece_color = GRAY);
 
 private:
@@ -105,11 +112,16 @@ public:
   /// @brief How big the piece is
   usize32 m_piece_size;
 
+  size_t m_piece_id;
+
   /// @brief It's the color the text from uses
   Color m_text_color;
 
   /// @brief No the actual color of the piece if it's on the side with the first turn
   bool m_is_white_side;
+
+  /// @brief keeps track of if the piece is still in play
+  bool m_is_alive;
 };
 
 
