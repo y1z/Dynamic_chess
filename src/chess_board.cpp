@@ -149,11 +149,33 @@ chessBoard::print_board_cells()
 }
 
 void
-chessBoard::draw_highlight_rectangle_at(const point32 cell_position) const
+chessBoard::draw_highlight_rectangle_at(const point32 cell_position,
+                                        const Color rectangle_color) const
 {
   const Rectangle rect = gen_rectangle_for_cell_position(cell_position, m_cell_size);
 
-  DrawRectangleRec(rect, CLITERAL(Color){ 253, 249, 0, 255 / 2 } );
+  DrawRectangleRec(rect, rectangle_color);
+
+}
+
+void
+chessBoard::draw_highlight_piece_possible_moves(const size_t piece_id,
+                                                const Color rectangle_color) const
+{
+  const auto* piece = get_piece_by_id(piece_id);
+  const auto piece_data = piece->get_piece_data();
+  std::vector<point32> points_to_draw;
+  points_to_draw.reserve(piece_data.how_piece_moves.size());
+  for (const auto& position : piece_data.how_piece_moves)
+  {
+    points_to_draw.push_back(position + piece->m_position);
+  }
+
+  for (const auto& point : points_to_draw)
+  {
+    draw_highlight_rectangle_at(point, rectangle_color);
+  }
+
 
 }
 

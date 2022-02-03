@@ -51,6 +51,12 @@ chessPiece::get_id() const
   return m_piece_id;
 }
 
+movementTypes
+chessPiece::get_movement_type() const
+{
+  return m_how_piece_works.move_type;
+}
+
 chessPiece
 chessPiece::pawn(const point32 position,
                  const usize32 piece_size,

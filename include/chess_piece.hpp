@@ -38,6 +38,9 @@ public:
   size_t
   get_id()const;
 
+  movementTypes
+  get_movement_type()const;
+
 
   /// @param position Where the piece will be in the board
   /// @param piece_size How big is the chess piece

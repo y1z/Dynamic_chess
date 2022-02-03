@@ -8,13 +8,25 @@ draw_board_row(const int32 distance_between_cells,
                const Rectangle starting_cell,
                const Color cell_color) {
 
+  draw_board_row(static_cast<float>(distance_between_cells),
+                 how_many_cells_to_draw,
+                 starting_cell,
+                 cell_color);
+}
+
+void
+draw_board_row(const float distance_between_cells,
+               const uint32 how_many_cells_to_draw,
+               const Rectangle starting_cell,
+               const Color cell_color) {
+
   assert(how_many_cells_to_draw > 0 || "need a minimum of 1 cells to draw");
 
 
   Rectangle board_cell = starting_cell;
   for (uint32 i = 0; i < how_many_cells_to_draw; ++i) {
     DrawRectangleRec(board_cell, cell_color);
-    board_cell.x += static_cast<float>(distance_between_cells);
+    board_cell.x += distance_between_cells;
   }
 }
 
@@ -32,14 +44,14 @@ draw_chess_board(const uint32 column_total,
   const float starting_x_position = starting_cell.x;
   for (uint32 i = 0; i < column_total; ++i) {
     if (i % 2 == 0) {
-      draw_board_row(starting_cell.width * 2, row_total / 2, starting_cell, starting_side_color);
+      draw_board_row(starting_cell.width * 2.0f, row_total / 2, starting_cell, starting_side_color);
       starting_cell.x += starting_cell.width;
-      draw_board_row(starting_cell.width * 2, row_total / 2, starting_cell, opposite_side_color);
+      draw_board_row(starting_cell.width * 2.0f, row_total / 2, starting_cell, opposite_side_color);
     }
     else {
-      draw_board_row(starting_cell.width * 2, row_total / 2, starting_cell, opposite_side_color);
+      draw_board_row(starting_cell.width * 2.0f, row_total / 2, starting_cell, opposite_side_color);
       starting_cell.x += starting_cell.width;
-      draw_board_row(starting_cell.width * 2, row_total / 2, starting_cell, starting_side_color);
+      draw_board_row(starting_cell.width * 2.0f, row_total / 2, starting_cell, starting_side_color);
     }
 
     starting_cell.x = starting_x_position;

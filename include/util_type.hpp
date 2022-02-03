@@ -14,6 +14,13 @@ struct point
   T y;
 
 
+
+
+  point operator+(const point& other)const
+  {
+    return { this->x + other.x, this->y + other.y };
+  }
+
   bool operator!=(const point& other)const
   {
     return !(this->operator==(other));

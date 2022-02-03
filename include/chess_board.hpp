@@ -53,8 +53,18 @@ public:
   void
   print_board_cells();
 
+  /// @brief Draws a rectangle at the given cell_position
+  /// @param cell_position where on the board (or even off the board) to draw the highlight
+  /// @param rectangle_color the color of the highlight.
   void
-  draw_highlight_rectangle_at(const point32 cell_position)const;
+  draw_highlight_rectangle_at(const point32 cell_position,
+                              const Color rectangle_color= CLITERAL(Color){ 253, 249, 0, 255 / 2 })const;
+
+  void
+  draw_highlight_piece_possible_moves(const size_t piece_id,
+                                      const Color rectangle_color = CLITERAL(Color) { 253, 249, 0, 255 / 2 })const;
+
+
 
   /// @return A chess board with the default configuration (aka how chess is normally played )
   static chessBoard
